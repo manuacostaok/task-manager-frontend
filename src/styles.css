@@ -91,7 +91,7 @@ body.light h1 {
 }
 
 /* =========================
-   INPUTS
+   INPUTS (FIX LOGIN + TASKS)
 ========================= */
 input {
   width: 100%;
@@ -100,6 +100,7 @@ input {
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   outline: none;
+  box-sizing: border-box;
   transition: 0.2s;
 }
 
@@ -112,6 +113,15 @@ body.dark input {
   background: #1f2937;
   border: 1px solid #374151;
   color: white;
+}
+
+/* =========================
+   LOGIN FIX
+========================= */
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* =========================
@@ -129,7 +139,6 @@ button {
 .btn-primary {
   background: #6366f1;
   color: white;
-  width: auto;
 }
 
 .btn-primary:hover {
@@ -147,7 +156,7 @@ button {
   transform: translateY(-1px);
 }
 
-/* logout */
+/* logout button */
 .logout {
   width: 100%;
   margin-bottom: 15px;
@@ -222,4 +231,13 @@ body.dark .task {
   .task {
     font-size: 14px;
   }
+  .footer {
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px;
+  opacity: 0.35;
+}
 }
