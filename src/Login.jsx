@@ -3,8 +3,8 @@ import { useState } from "react";
 export default function Login({ apiUrl, onAuth }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState(""); // 👈 necesario para register
-  const [mode, setMode] = useState("login"); // login | register
+  const [name, setName] = useState("");
+  const [mode, setMode] = useState("login");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -17,12 +17,9 @@ export default function Login({ apiUrl, onAuth }) {
 
       const bodyData =
         mode === "login"
-          ? {
-              email,
-              password,
-            }
+          ? { email, password }
           : {
-              name: name || email.split("@")[0], // fallback seguro
+              name: name || email.split("@")[0],
               email,
               password,
             };
@@ -43,7 +40,6 @@ export default function Login({ apiUrl, onAuth }) {
         return;
       }
 
-      // 🔐 validar token
       if (!data.token) {
         alert("No se recibió token del servidor");
         setLoading(false);
@@ -60,8 +56,12 @@ export default function Login({ apiUrl, onAuth }) {
   };
 
   return (
+    
     <div className="login">
-      {/* NAME SOLO EN REGISTER */}
+        
+    
+
+      {/* REGISTER NAME */}
       {mode === "register" && (
         <input
           placeholder="Name"
@@ -70,12 +70,14 @@ export default function Login({ apiUrl, onAuth }) {
         />
       )}
 
+      {/* EMAIL */}
       <input
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
 
+      {/* PASSWORD */}
       <input
         placeholder="Password"
         type="password"
@@ -83,6 +85,7 @@ export default function Login({ apiUrl, onAuth }) {
         onChange={(e) => setPassword(e.target.value)}
       />
 
+      {/* MAIN BUTTON */}
       <button
         className="btn-primary"
         onClick={handleSubmit}
@@ -95,13 +98,16 @@ export default function Login({ apiUrl, onAuth }) {
           : "Register"}
       </button>
 
+      {/* SWITCH MODE */}
       <button
         style={{
           background: "transparent",
           border: "none",
           cursor: "pointer",
-          marginTop: 8,
+          marginTop: 10,
           color: "inherit",
+          fontSize: 13,
+          opacity: 0.8,
         }}
         onClick={() =>
           setMode(mode === "login" ? "register" : "login")

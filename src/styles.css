@@ -388,3 +388,52 @@ body.dark .task {
     transform: translateX(-50%) translateY(0) scale(1);
   }
 }
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* LEFT SIDE */
+.auth-info {
+  max-width: 280px;
+}
+
+.auth-info h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.auth-info p {
+  font-size: 13px;
+  opacity: 0.75;
+  line-height: 1.5;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: 0.8;
+  gap: 5px;
+}
+
+/* RIGHT SIDE */
+.login-card {
+  width: 280px;
+  padding: 20px;
+  border-radius: 14px;
+
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(10px);
+
+  border: 1px solid #e5e7eb;
+}
+
+body.dark .login-card {
+  background: rgba(17,24,39,0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+}

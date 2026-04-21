@@ -4,7 +4,7 @@ import Tasks from "./Tasks";
 import { Moon, Sun, LogOut } from "lucide-react";
 import "./styles.css";
 
-const API_URL = "https://task-manager-api-lpfs.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -28,13 +28,21 @@ export default function App() {
     <>
       <div className="background-glow glow1" />
       <div className="background-glow glow2" />
-
+      <div className="app-hero">
+      <p>
+               • Aplicación full-stack de gestión de tareas con autenticación JWT
+                </p>
+                <p>• CRUD en tiempo real, UI responsive y modo dark/light
+              </p>
+              
+      </div>
       <div className="container">
-
+        <h1> 🗂️ Task Manager 🧠 </h1>
         {/* HEADER */}
         <div className="app-header">
-          <h1> 🗂️ Task Manager 🚀 </h1>
-
+          <p> Administrá tus tareas de forma eficiente </p>
+          
+          
           <div className="header-actions">
 
             {/* THEME BUTTON */}
@@ -60,7 +68,7 @@ export default function App() {
                 title="Cerrar sesión"
               >
                 <LogOut size={18} />
-                <span className="logout-text">Logout</span>
+                <span className="logout-text"></span>
               </button>
             )}
 
@@ -75,7 +83,8 @@ export default function App() {
       </div>
 
       <footer className="footer">
-        Built by Manu Acosta • 2026
+        
+        • Built by Manuel Acosta 2026 •
       </footer>
     </>
   );
