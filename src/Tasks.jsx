@@ -3,29 +3,36 @@ import { useEffect, useState } from "react";
 export default function Tasks({ token, apiUrl }) {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState("");
 
-  // GET
+  const showToast = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(""), 2000);
+  };
+
   useEffect(() => {
     const getTasks = async () => {
-      const res = await fetch(`${apiUrl}/tasks`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        setLoading(true);
 
-      const data = await res.json();
+        const res = await fetch(`${apiUrl}/tasks`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (Array.isArray(data)) {
-        setTasks(data);
-      } else {
-        setTasks([]);
+        const data = await res.json();
+
+        setTasks(Array.isArray(data) ? data : []);
+      } finally {
+        setLoading(false);
       }
     };
 
     getTasks();
   }, [apiUrl, token]);
 
-  // CREATE
   const createTask = async () => {
     if (!title.trim()) return;
 
@@ -39,14 +46,13 @@ export default function Tasks({ token, apiUrl }) {
     });
 
     const newTask = await res.json();
-
     if (!res.ok) return;
 
     setTasks((prev) => [...prev, newTask]);
     setTitle("");
+    showToast("Tarea agregada ✔");
   };
 
-  // DELETE (FIX ESTABLE)
   const deleteTask = async (id) => {
     const res = await fetch(`${apiUrl}/tasks/${id}`, {
       method: "DELETE",
@@ -58,10 +64,13 @@ export default function Tasks({ token, apiUrl }) {
     if (!res.ok) return;
 
     setTasks((prev) => prev.filter((t) => t._id !== id));
+    showToast("Tarea eliminada 🗑");
   };
 
-  // EDIT (FIX REAL TIME UPDATE)
-  const editTask = async (id, newTitle) => {
+  const editTask = async (id, currentTitle) => {
+    const newTitle = prompt("Editar tarea:", currentTitle);
+    if (!newTitle) return;
+
     const res = await fetch(`${apiUrl}/tasks/${id}`, {
       method: "PUT",
       headers: {
@@ -72,52 +81,70 @@ export default function Tasks({ token, apiUrl }) {
     });
 
     const updated = await res.json();
-
     if (!res.ok) return;
 
     setTasks((prev) =>
       prev.map((t) => (t._id === id ? updated : t))
     );
+
+    showToast("Tarea actualizada ✏");
   };
 
   return (
     <div>
+
+      {/* TOAST */}
+      {toast && <div className="toast">{toast}</div>}
+
+      {/* INPUT */}
       <div className="row">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Nueva tarea"
+          placeholder="Nueva tarea..."
         />
 
         <button className="btn-primary" onClick={createTask}>
-          Agregar
+          + Agregar
         </button>
       </div>
 
+      {/* LOADING */}
+      {loading && (
+        <>
+          <div className="skeleton" />
+          <div className="skeleton" />
+        </>
+      )}
+
+      {/* EMPTY */}
+      {!loading && tasks.length === 0 && (
+        <div className="empty-state">
+          No hay tareas todavía 📝
+        </div>
+      )}
+
+      {/* TASKS */}
       {tasks.map((task) => (
         <div className="task" key={task._id}>
           <span>{task.title}</span>
 
-          <div className="row">
+          <div className="task-actions">
+
             <button
-              className="btn-primary"
-              onClick={() => {
-                const newTitle = prompt(
-                  "Editar tarea:",
-                  task.title
-                );
-                if (newTitle) editTask(task._id, newTitle);
-              }}
+              className="icon-btn-small icon-edit"
+              onClick={() => editTask(task._id, task.title)}
             >
-              Edit
+              ✏ 
             </button>
 
             <button
-              className="btn-danger"
+              className="icon-btn-small icon-delete"
               onClick={() => deleteTask(task._id)}
             >
-              X
+              🗑
             </button>
+
           </div>
         </div>
       ))}

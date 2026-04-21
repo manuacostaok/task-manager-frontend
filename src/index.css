@@ -109,3 +109,56 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* TOP BAR */
+.top-bar {
+  position: fixed;
+  top: 15px;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  z-index: 10;
+}
+
+.top-left h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+/* LOGOUT ARRIBA DERECHA */
+.logout-top {
+  padding: 8px 12px;
+}
+
+/* THEME SEPARATION FIX */
+.theme-toggle {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* TOAST (GLOBAL UX FEEL) */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  background: #111827;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  font-size: 13px;
+  z-index: 9999;
+
+  animation: fade 0.3s ease;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
