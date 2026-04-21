@@ -1,188 +1,99 @@
-# 🚀 Task Manager App
+# 🧠 Task Manager Full Stack App
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Node](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+Aplicación full stack de gestión de tareas con autenticación JWT, desarrollada con React, Node.js y MongoDB.
 
 ---
 
-## 📌 Overview
+## 🚀 Live Demo
 
-Fullstack Task Manager App con autenticación JWT, CRUD de tareas y UI moderna tipo SaaS.
+Frontend:
+https://task-manager-frontend-one-liart.vercel.app/
 
-Proyecto diseñado para **portfolio profesional (Junior / Trainee Fullstack)**.
-
----
-
-## ✨ Features
-
-- 🔐 Registro y login de usuarios
-- 🛡️ Autenticación con JWT
-- 📋 CRUD completo de tareas
-- 👤 Tareas por usuario
-- 🌙 Dark / Light mode
-- 📱 Responsive design
-- ⚡ UI moderna tipo SaaS
-- 💾 Persistencia con localStorage
-- 🎨 Glassmorphism + animaciones suaves
+Backend:
+https://task-manager-api-lpfs.onrender.com
 
 ---
 
-## 🧰 Tech Stack
+## ⚙️ Tech Stack
 
-### Frontend
-- React
-- Vite
-- CSS moderno
+Frontend:
+- React (Vite)
+- CSS moderno (glassmorphism UI)
 - Fetch API
+- LocalStorage auth
+- Environment variables (.env)
 
-### Backend
+Backend:
 - Node.js
 - Express
 - MongoDB + Mongoose
-- JWT
-- bcrypt
+- JWT Authentication
+- bcrypt password hashing
 
 ---
 
-## 📁 Project Structure
+## 🔐 Features
 
-Frontend:
-
-task-manager-frontend/
-src/
-App.jsx
-Login.jsx
-Tasks.jsx
-styles.css
-main.jsx
-
-Backend:
-
-task-manager-api/
-src/
-routes/
-controllers/
-models/
-middleware/
-config/
+- Registro e inicio de sesión de usuarios
+- Autenticación con JWT
+- CRUD completo de tareas (Create, Read, Update, Delete)
+- Protección de rutas con token
+- Persistencia en MongoDB
+- Dark / Light mode
+- Toast notifications (feedback visual)
+- Skeleton loading states
+- UI responsive (mobile + desktop)
 
 ---
 
-## 🚀 Installation
+## 🌐 Environment Variables
 
-### 1. Clone repository
+Frontend (.env):
 
-git clone https://github.com/tu-usuario/task-manager-frontend.git
+VITE_API_URL=https://task-manager-api-lpfs.onrender.com/api
 
-### 2. Install dependencies
+---
 
+## 🛠️ Installation
+
+### Frontend
+
+git clone https://github.com/tu-usuario/task-manager
+cd task-manager-frontend
 npm install
-
-### 3. Run project
-
 npm run dev
 
 ---
 
-## 🌐 API Base URL
+### Backend
 
-http://localhost:3000/api
-
----
-
-## 🔐 Authentication Flow
-
-Token stored in:
-
-localStorage.getItem("token")
-
-Sent in requests as:
-
-Authorization: Bearer <token>
+cd backend
+npm install
+npm start
 
 ---
 
-## 📡 API Endpoints
+## 🧠 What I Learned
 
-### Auth
-
-POST /api/auth/register → Register user  
-POST /api/auth/login → Login user  
-
-### Tasks
-
-GET /api/tasks → Get user tasks  
-POST /api/tasks → Create task  
-PUT /api/tasks/:id → Update task  
-DELETE /api/tasks/:id → Delete task  
+- JWT authentication flow (login + protected routes)
+- Full stack architecture separation (frontend/backend)
+- Deployment with Vercel (frontend) and Render (backend)
+- Environment variables handling for production
+- REST API design and consumption
+- UI/UX design principles for modern SaaS apps
 
 ---
 
-## 🎨 UI / UX Highlights
+## 📸 UI Highlights
 
-- Smooth dark/light mode toggle
-- Glassmorphism cards
-- Animated background glow
-- Responsive layout
-- Clean SaaS-style interface
-
----
-
-## 📸 Preview
-
-### 🌞 Light Mode
-Minimal, clean dashboard style
-
-### 🌙 Dark Mode
-Modern SaaS aesthetic (Notion/Linear inspired)
+- Modern glassmorphism design
+- Clean task management layout
+- Animated feedback with toast system
+- Responsive design for all devices
+- Dark mode support
 
 ---
 
-## 🌍 Live Demo
+## 👨‍💻 Author
 
-👉 Frontend: https://your-vercel-link.vercel.app  
-👉 Backend: https://your-render-link.onrender.com  
-
----
-
-## 💼 Author
-
-Made with 💻 by **Manu Acosta**
-
-Fullstack Developer in progress 🚀
-
----
-
-## 📊 Status
-
-🟢 Functional  
-🟢 Responsive  
-🟢 Auth system implemented  
-🟢 Ready for portfolio  
-🟢 Production-style UI  
-
----
-
-## 🔥 Bonus
-
-This project simulates a real SaaS application:
-
-- real authentication
-- multi-user system
-- full CRUD
-- modern UI/UX
-- scalable backend architecture
-
-Ideal for **junior fullstack job applications**.
-
----
-
-## 🚀 Next Improvements
-
-- refresh tokens
-- task categories
-- drag & drop tasks
-- advanced dashboard
-- notifications system
+Manu Acosta
