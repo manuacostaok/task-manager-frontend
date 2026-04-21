@@ -161,6 +161,28 @@ body.dark .app-header {
 /* =========================
    ICON BUTTONS (PRO UI)
 ========================= */
+.icon-btn {
+  height: 40px;
+  padding: 0 12px;
+
+  border-radius: 12px;
+  border: 1px solid transparent;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  background: transparent;
+  color: inherit;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: 0.2s;
+}
 .icon-btn:hover {
   height: 40px;
   padding: 0 12px;
@@ -369,43 +391,91 @@ body.dark .task {
 
 .toast {
   position: fixed;
+  top: 20px;
+  right: 20px;
 
-  /* siempre alineado al centro del container */
-  left: 50%;
-  transform: translateX(-50%);
+  min-width: 220px;
+  max-width: 300px;
 
-  /* alineado a la altura del título */
-  top: 95px;
+  padding: 14px 16px;
+  border-radius: 14px;
 
-  /* 👇 clave: no full width */
-  width: fit-content;
-  max-width: 80%;
-
-  padding: 8px 12px;
-
-  border-radius: 999px; /* pill shape */
-
-  font-size: 12.5px;
+  color: #fff;
+  font-size: 14px;
   font-weight: 500;
-  white-space: nowrap;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(20, 20, 20, 0.75);
+  backdrop-filter: blur(12px);
 
-  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
-  background: rgba(17,24,39,0.92);
-  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
-  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-  backdrop-filter: blur(10px);
-
+  overflow: hidden;
   z-index: 9999;
-
-  animation: toastIn 0.2s ease;
 }
 
+/* contenido */
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast-icon {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* barra progreso */
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+
+  background: rgba(255, 255, 255, 0.2);
+
+  overflow: hidden;
+}
+
+.toast-progress::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  background: #fff;
+
+  animation: toastBar 2.5s linear forwards;
+}
+
+@keyframes toastBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* variantes */
+.toast.success {
+  border-left: 4px solid #22c55e;
+}
+
+.toast.error {
+  border-left: 4px solid #ef4444;
+}
+
+.toast.warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.toast.default {
+  border-left: 4px solid #3b82f6;
+}
 /* animación consistente */
 @keyframes toastIn {
   from {
@@ -562,4 +632,144 @@ body.dark .check-btn {
 ========================= */
 .task.done {
   opacity: 0.7;
+}
+
+/* =========================
+   FIX LIGHT MODE (CONSISTENCIA TOTAL)
+========================= */
+
+/* 🧠 TEXTO GENERAL */
+body.light {
+  background: #f9fafb;
+  color: #111827;
+}
+
+/* 🧾 TASK TEXT */
+body.light .task span {
+  color: #111827;
+}
+
+/* 📦 TASK CARD (hover incluido) */
+body.light .task {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d1d5db;
+}
+
+body.light .task:hover {
+  background: #f3f4f6;
+}
+
+/* 🔘 CHECK BUTTON */
+body.light .check-btn {
+  background: rgba(0,0,0,0.06);
+  color: #111827;
+}
+
+body.light .check-btn:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+/* 🎛 ICON BUTTONS (FIX porque estaba mal definido) */
+body.light .icon-btn {
+  background: rgba(255,255,255,0.95);
+  color: #111827;
+  border: 1px solid #e5e7eb;
+}
+
+/* 🧊 SELECT */
+body.light select {
+  background: white;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+/* 🧾 FILTER TEXT */
+body.light .filter-row span {
+  color: #374151;
+}
+
+/* 🧱 INPUT */
+body.light input {
+  background: white;
+  color: #111827;
+}
+
+/* 🧊 CONTAINER (más contraste) */
+body.light .container {
+  background: rgba(255,255,255,0.95);
+  border: 1px solid #e5e7eb;
+}
+
+/* 🧾 LOGIN CARD */
+body.light .login-card {
+  background: rgba(255,255,255,0.9);
+  color: #111827;
+}
+
+/* 🔔 TOAST (light version más visible) */
+body.light .toast {
+  background: rgba(17,24,39,0.95);
+  color: white;
+}
+
+/* 🧠 EMPTY STATE */
+body.light .empty-state {
+  color: #6b7280;
+}
+
+/* 🦴 SKELETON (más visible en light) */
+body.light .skeleton {
+  background: linear-gradient(90deg,#e5e7eb,#f9fafb,#e5e7eb);
+}
+
+/* =========================
+   MODAL
+========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  width: 300px;
+  padding: 20px;
+  border-radius: 16px;
+
+  background: rgba(255,255,255,0.95);
+  border: 1px solid #e5e7eb;
+
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+body.dark .modal {
+  background: rgba(17,24,39,0.95);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.modal h3 {
+  margin: 0 0 8px;
+}
+
+.modal p {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.modal-actions button {
+  flex: 1;
 }
