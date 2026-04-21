@@ -30,19 +30,24 @@ export default function App() {
       <div className="background-glow glow2" />
       <div className="app-hero">
       <p>
-               • Aplicación full-stack de gestión de tareas con autenticación JWT
+                Aplicación full-stack de gestión de tareas con autenticación JWT
                 </p>
-                <p>• CRUD en tiempo real, UI responsive y modo dark/light
+                <p> CRUD en tiempo real, UI responsive y modo dark/light
               </p>
               
       </div>
       <div className="container">
+        <div className="tittle">
         <h1> 🗂️ Task Manager 🧠 </h1>
+        </div>
         {/* HEADER */}
         <div className="app-header">
+                <div className="tittle2">
+
           <p> Administrá tus tareas de forma eficiente </p>
           
-          
+                </div>
+
           <div className="header-actions">
 
             {/* THEME BUTTON */}
@@ -80,12 +85,18 @@ export default function App() {
         ) : (
           <Tasks token={token} apiUrl={API_URL} />
         )}
-      </div>
-
-      <footer className="footer">
-        
-        • Built by Manuel Acosta 2026 •
-      </footer>
+        </div>
+                  <footer className="footer">
+                    Built by Manuel Acosta 2026 
+                  </footer>
+                    <div className="tech-stack">
+                      <span>React</span>
+                      <span>Node.js</span>
+                      <span>Express</span>
+                      <span>MongoDB</span>
+                      <span>JWT Auth</span>
+        </div>
+              
     </>
   );
 }
