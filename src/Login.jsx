@@ -24,7 +24,7 @@ export default function Login({ apiUrl, onAuth }) {
               password,
             };
 
-      const res = await fetch(`${apiUrl}/auth/${endpoint}`, {
+      const res = await fetch(`${apiUrl}/api/auth/${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
