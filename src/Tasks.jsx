@@ -5,10 +5,21 @@ export default function Tasks({ token, apiUrl }) {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState("");
+  const [filter, setFilter] = useState(
+    localStorage.getItem("filter") || "all"
+  );
 
   const showToast = (msg) => {
     setToast(msg);
     setTimeout(() => setToast(""), 2000);
+  };
+
+  // 🔐 helper para manejar token expirado
+  const handleAuthError = (res) => {
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
@@ -22,9 +33,18 @@ export default function Tasks({ token, apiUrl }) {
           },
         });
 
+        handleAuthError(res);
+
         const data = await res.json();
 
+        if (!res.ok) {
+          showToast("Error al cargar tareas ❌");
+          return;
+        }
+
         setTasks(Array.isArray(data) ? data : []);
+      } catch {
+        showToast("Error de conexión ❌");
       } finally {
         setLoading(false);
       }
@@ -33,74 +53,167 @@ export default function Tasks({ token, apiUrl }) {
     getTasks();
   }, [apiUrl, token]);
 
+  // 💾 guardar filtro
+  useEffect(() => {
+    localStorage.setItem("filter", filter);
+  }, [filter]);
+
+  // ✅ TOGGLE COMPLETED
+  const toggleTask = async (id, completed) => {
+    try {
+      const res = await fetch(`${apiUrl}/api/tasks/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ completed: !completed }),
+      });
+
+      handleAuthError(res);
+
+      const updated = await res.json();
+
+      if (!res.ok) {
+        showToast("Error al actualizar ❌");
+        return;
+      }
+
+      setTasks((prev) =>
+        prev.map((t) => (t._id === id ? updated : t))
+      );
+    } catch {
+      showToast("Error de conexión ❌");
+    }
+  };
+
+  // ✅ CREAR
   const createTask = async () => {
     if (!title.trim()) return;
 
-    const res = await fetch(`${apiUrl}/api/tasks`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ title }),
-    });
+    try {
+      const res = await fetch(`${apiUrl}/api/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title }),
+      });
 
-    const newTask = await res.json();
-    if (!res.ok) return;
+      handleAuthError(res);
 
-    setTasks((prev) => [...prev, newTask]);
-    setTitle("");
-    showToast("Tarea agregada ✔");
+      const newTask = await res.json();
+
+      if (!res.ok) {
+        showToast("Error al crear ❌");
+        return;
+      }
+
+      setTasks((prev) => [...prev, newTask]);
+      setTitle("");
+      showToast("Tarea agregada ✔");
+    } catch {
+      showToast("Error de conexión ❌");
+    }
   };
 
+  // ✅ DELETE
   const deleteTask = async (id) => {
-    const res = await fetch(`${apiUrl}/api/tasks/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    if (!window.confirm("¿Eliminar tarea?")) return;
 
-    if (!res.ok) return;
+    try {
+      const res = await fetch(`${apiUrl}/api/tasks/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    setTasks((prev) => prev.filter((t) => t._id !== id));
-    showToast("Tarea eliminada 🗑");
+      handleAuthError(res);
+
+      if (!res.ok) {
+        showToast("Error al eliminar ❌");
+        return;
+      }
+
+      setTasks((prev) => prev.filter((t) => t._id !== id));
+      showToast("Tarea eliminada 🗑");
+    } catch {
+      showToast("Error de conexión ❌");
+    }
   };
 
+  // ✅ EDIT
   const editTask = async (id, currentTitle) => {
     const newTitle = prompt("Editar tarea:", currentTitle);
-    if (!newTitle) return;
+    if (!newTitle?.trim()) return;
 
-    const res = await fetch(`${apiUrl}/api/tasks/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ title: newTitle }),
-    });
+    try {
+      const res = await fetch(`${apiUrl}/api/tasks/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title: newTitle }),
+      });
 
-    const updated = await res.json();
-    if (!res.ok) return;
+      handleAuthError(res);
 
-    setTasks((prev) =>
-      prev.map((t) => (t._id === id ? updated : t))
-    );
+      const updated = await res.json();
 
-    showToast("Tarea actualizada ✏");
+      if (!res.ok) {
+        showToast("Error al editar ❌");
+        return;
+      }
+
+      setTasks((prev) =>
+        prev.map((t) => (t._id === id ? updated : t))
+      );
+
+      showToast("Tarea actualizada ✏");
+    } catch {
+      showToast("Error de conexión ❌");
+    }
   };
+
+  // ✅ FILTRO
+  const filteredTasks = tasks.filter((t) => {
+    if (filter === "completed") return t.completed;
+    if (filter === "pending") return !t.completed;
+    return true;
+  });
 
   return (
     <div>
-
       {/* TOAST */}
       {toast && <div className="toast">{toast}</div>}
+
+      {/* FILTRO */}
+      <div className="filter-row">
+        <span style={{ fontSize: "13px", opacity: 0.7 }}>
+          {filteredTasks.length} tareas
+        </span>
+
+        <select
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        >
+          <option value="all">Todas</option>
+          <option value="completed">Completadas</option>
+          <option value="pending">Pendientes</option>
+        </select>
+      </div>
 
       {/* INPUT */}
       <div className="row">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          onKeyDown={(e) =>
+            e.key === "Enter" && createTask()
+          }
           placeholder="Nueva tarea..."
         />
 
@@ -118,33 +231,48 @@ export default function Tasks({ token, apiUrl }) {
       )}
 
       {/* EMPTY */}
-      {!loading && tasks.length === 0 && (
+      {!loading && filteredTasks.length === 0 && (
         <div className="empty-state">
-          No hay tareas todavía 📝
+          No hay tareas 📝
         </div>
       )}
 
       {/* TASKS */}
-      {tasks.map((task) => (
-        <div className="task" key={task._id}>
+      {filteredTasks.map((task) => (
+        <div
+          className={`task ${task.completed ? "done" : ""}`}
+          key={task._id}
+        >
           <span>{task.title}</span>
 
           <div className="task-actions">
-
+            {/* COMPLETAR */}
             <button
-              className="icon-btn-small icon-edit"
-              onClick={() => editTask(task._id, task.title)}
+              className="check-btn"
+              onClick={() =>
+                toggleTask(task._id, task.completed)
+              }
             >
-              ✏ 
+              {task.completed ? "✅" : "⬜"}
             </button>
 
+            {/* EDIT */}
+            <button
+              className="icon-btn-small icon-edit"
+              onClick={() =>
+                editTask(task._id, task.title)
+              }
+            >
+              ✏
+            </button>
+
+            {/* DELETE */}
             <button
               className="icon-btn-small icon-delete"
               onClick={() => deleteTask(task._id)}
             >
               🗑
             </button>
-
           </div>
         </div>
       ))}

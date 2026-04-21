@@ -93,6 +93,11 @@ body.dark .icon-btn {
   to { transform: translate(60px, -60px); }
 }
 
+.task.done span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
 /* =========================
    MAIN CONTAINER
 ========================= */
@@ -500,4 +505,61 @@ body.dark .login-card {
   color: inherit;
 
   opacity: 0.8;
+}
+/* =========================
+   FILTER SELECT
+========================= */
+select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+select:hover {
+  border-color: #6366f1;
+}
+
+body.dark select {
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: white;
+}
+
+/* =========================
+   FILTER ROW
+========================= */
+.filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   TOGGLE CHECK BUTTON
+========================= */
+.check-btn {
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 14px;
+
+  background: rgba(0,0,0,0.04);
+}
+
+.check-btn:hover {
+  transform: scale(1.1);
+}
+
+body.dark .check-btn {
+  background: rgba(255,255,255,0.06);
+}
+
+/* =========================
+   TASK COMPLETED
+========================= */
+.task.done {
+  opacity: 0.7;
 }
