@@ -16,7 +16,7 @@ export default function Tasks({ token, apiUrl }) {
       try {
         setLoading(true);
 
-        const res = await fetch(`${apiUrl}/tasks`, {
+        const res = await fetch(`${apiUrl}/api/tasks`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,7 +36,7 @@ export default function Tasks({ token, apiUrl }) {
   const createTask = async () => {
     if (!title.trim()) return;
 
-    const res = await fetch(`${apiUrl}/tasks`, {
+    const res = await fetch(`${apiUrl}/api/tasks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export default function Tasks({ token, apiUrl }) {
   };
 
   const deleteTask = async (id) => {
-    const res = await fetch(`${apiUrl}/tasks/${id}`, {
+    const res = await fetch(`${apiUrl}/api/tasks/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ export default function Tasks({ token, apiUrl }) {
     const newTitle = prompt("Editar tarea:", currentTitle);
     if (!newTitle) return;
 
-    const res = await fetch(`${apiUrl}/tasks/${id}`, {
+    const res = await fetch(`${apiUrl}/api/tasks/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
